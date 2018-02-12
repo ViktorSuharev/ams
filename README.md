@@ -9,14 +9,14 @@ REST API:
 - top up money to account
     path: /service/account/put
     request params:
-        - accountId
+        - id
         - amount
     type: PATCH
 
 - withdraw money from account
     path: /service/account/get
     request params:
-            - accountId
+            - id
             - amount
     type: PATCH
  
