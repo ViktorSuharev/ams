@@ -31,4 +31,4 @@ REST API:
 Database:
     H2
     Isolation level:
-        - Repeatable Read (it should be enough for our cases)
+        - Serializable

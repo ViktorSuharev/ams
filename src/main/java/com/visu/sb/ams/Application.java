@@ -10,12 +10,9 @@ import java.sql.Statement;
 @SpringBootApplication
 public class Application {
 
-/*
-	public static String QUERY_CREATE_ACCOUNTS_TABLE =
-			"CREATE TABLE accounts \n" +
-					"   (id bigint, \n" +
-					"   balance decimal)";
-*/
+	private static final String H2_CONNECTION_URL = "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE;MVCC=FALSE;LOCK_MODE=1";
+	private static final String H2_USERNAME = "h2";
+	private static final String H2_PASSWORD = "h2";
 
 	public static String QUERY_INSERT_BA_TEST_DATA_USER1 =
 			"INSERT INTO accounts \n" +
@@ -35,16 +32,19 @@ public class Application {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
 
-/*		String DB_CONNECTION_URL = "jdbc:h2:mem:test";
-		Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, "h2", "h2");
+		createTestData();
+    }
+
+    private static void createTestData() throws Exception {
+		Connection connection = DriverManager.getConnection(H2_CONNECTION_URL, H2_USERNAME, H2_PASSWORD);
 		Statement stmt = connection.createStatement();
 
-//		stmt.executeUpdate(QUERY_CREATE_ACCOUNTS_TABLE);
 		stmt.executeUpdate(QUERY_INSERT_BA_TEST_DATA_USER1);
 		stmt.executeUpdate(QUERY_INSERT_BA_TEST_DATA_USER2);
 		stmt.executeUpdate(QUERY_INSERT_BA_TEST_DATA_USER3);
+		connection.commit();
 
 		connection.close();
-		stmt.close();*/
-    }       
-}            
+		stmt.close();
+	}
+}

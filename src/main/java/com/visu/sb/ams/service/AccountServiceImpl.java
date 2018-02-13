@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -24,26 +25,26 @@ public class AccountServiceImpl implements AccountService {
     private AccountDao accountDao;
 
     @Override
-    @Transactional
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public OperationResult put(BigInteger accountId, BigDecimal amount) {
+        LOGGER.debug("put begin");
         OperationResult operationResult = new OperationResult(Status.SUCCESS);
         try {
             Account account = getAccountById(accountId);
             BigDecimal balance = account.getBalance();
             account.setBalance(balance.add(amount));
             accountDao.update(account);
-
-            LOGGER.info("account {} was topped up with {}", accountId, amount);
         } catch (Exception e) {
             operationResult = new OperationResult(Status.FAILED, e.getMessage());
         }
-
+        LOGGER.debug("put end");
         return operationResult;
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public OperationResult get(BigInteger accountId, BigDecimal amount) {
+        LOGGER.debug("get begin");
         OperationResult operationResult = new OperationResult(Status.SUCCESS);
         try {
             Account account = getAccountById(accountId);
@@ -51,36 +52,26 @@ public class AccountServiceImpl implements AccountService {
             BigDecimal balance = account.getBalance();
             account.setBalance(balance.subtract(amount));
             accountDao.update(account);
-
-            LOGGER.info("account {} was withdrawn with {}", accountId, amount);
         } catch (Exception e) {
             operationResult = new OperationResult(Status.FAILED, e.getMessage());
         }
-
+        LOGGER.debug("get end");
         return operationResult;
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation= Isolation.SERIALIZABLE)
     public OperationResult transfer(BigInteger senderId, BigInteger receiverId, BigDecimal amount) {
+        LOGGER.debug("transfer begin");
         OperationResult operationResult = new OperationResult(Status.SUCCESS);
         try {
-            Account sender = getAccountById(senderId);
-            validateWithdraw(sender, amount);
-            BigDecimal senderBalance = sender.getBalance();
-            sender.setBalance(senderBalance.subtract(amount));
-            accountDao.update(sender);
-
-            Account receiver = getAccountById(receiverId);
-            BigDecimal receiverBalance = receiver.getBalance();
-            receiver.setBalance(receiverBalance.add(amount));
-            accountDao.update(receiver);
-
-            LOGGER.info("account {} transfered {} to account {}", senderId, amount, receiverId);
+            get(senderId, amount);
+            Thread.sleep(10000L);
+            put(receiverId, amount);
         } catch (Exception e) {
             operationResult = new OperationResult(Status.FAILED, e.getMessage());
         }
-
+        LOGGER.debug("transfer end");
         return operationResult;
     }
 
