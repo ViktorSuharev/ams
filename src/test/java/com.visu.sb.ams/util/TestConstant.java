@@ -6,5 +6,8 @@ public class TestConstant {
     public static final String H2_USER_NAME = "h2";
     public static final String H2_PASSWORD = "h2";
 
+
+    public static final String OPERATION_PROCESSED_SUCCESSFULLY = "Operation processed successfully";
+
     private TestConstant() {}
 }

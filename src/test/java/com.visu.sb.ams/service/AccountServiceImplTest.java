@@ -73,7 +73,7 @@ public class AccountServiceImplTest {
         BigDecimal amount = BigDecimal.valueOf(100L);
         OperationResult result = accountService.put(BigInteger.ONE, amount);
         Assert.assertEquals(Status.SUCCESS, result.getStatus());
-        Assert.assertEquals("Operation processed successfully", result.getDescription());
+        Assert.assertEquals(TestConstant.OPERATION_PROCESSED_SUCCESSFULLY, result.getDescription());
 
         BigDecimal updatedBalance = initialAccount.getBalance().add(amount);
 
@@ -96,7 +96,7 @@ public class AccountServiceImplTest {
         OperationResult result = accountService.get(BigInteger.ONE, AMOUNT_LESS_BALANCE);
 
         Assert.assertEquals(Status.SUCCESS, result.getStatus());
-        Assert.assertEquals("Operation processed successfully", result.getDescription());
+        Assert.assertEquals(TestConstant.OPERATION_PROCESSED_SUCCESSFULLY, result.getDescription());
 
         BigDecimal updatedBalance = initialAccount.getBalance().subtract(AMOUNT_LESS_BALANCE);
         Account updatedAccount = accountService.getAccountById(BigInteger.ONE);
@@ -138,7 +138,7 @@ public class AccountServiceImplTest {
         OperationResult result = accountService.transfer(senderId, receiverId, AMOUNT_LESS_BALANCE);
 
         Assert.assertEquals(Status.SUCCESS, result.getStatus());
-        Assert.assertEquals("Operation processed successfully", result.getDescription());
+        Assert.assertEquals(TestConstant.OPERATION_PROCESSED_SUCCESSFULLY, result.getDescription());
 
         BigDecimal updatedSenderBalance = sender.getBalance().subtract(AMOUNT_LESS_BALANCE);
         Account updatedSenderAccount = accountService.getAccountById(senderId);
