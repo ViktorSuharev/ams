@@ -5,27 +5,20 @@ Account Management System
 Business Logic constraints:
     negative amounts are prohibited
 
-REST API:
-- top up money to account
-    path: /service/account/put
-    request params:
-        - id
-        - amount
+REST API:<br/>
+- top up money to account:<br/>
+    path: /service/account/put:<br/>
+    request params:id, amount
     type: PATCH
 
-- withdraw money from account
-    path: /service/account/get
-    request params:
-            - id
-            - amount
+- withdraw money from account<br/>
+    path: /service/account/get<br/>
+    request params: id, amount<br/>
     type: PATCH
  
-- transfer money from between accounts
-    path: /service/account/transfer
-    request params:
-            - senderId
-            - receiverId
-            - amount
+- transfer money from between accounts<br/>
+    path: /service/account/transfer<br/>
+    request params: senderId, receiverId, amount<br/>
     type: PATCH
 
 Database:
