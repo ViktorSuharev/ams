@@ -66,7 +66,6 @@ public class AccountServiceImpl implements AccountService {
         OperationResult operationResult = new OperationResult(Status.SUCCESS);
         try {
             get(senderId, amount);
-            Thread.sleep(10000L);
             put(receiverId, amount);
         } catch (Exception e) {
             operationResult = new OperationResult(Status.FAILED, e.getMessage());
